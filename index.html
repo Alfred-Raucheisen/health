@@ -171,8 +171,8 @@ body { font-family: 'Georgia', serif; background: var(--cream); color: var(--tex
     <div class="intro-card">
       <h2>So funktioniert's</h2>
       <p>Das Assessment besteht aus 25 Aussagen in fünf Bereichen. Du bewertest jede Aussage auf zwei Dimensionen:</p>
-      <p><strong>Aktuell:</strong> Wie sehr trifft das gerade auf dich zu? (1 = trifft nicht zu / 5 = trifft vollständig zu)</p>
-      <p><strong>Künftig:</strong> Wie sehr möchtest du das verändern? (1 = so soll es bleiben / 5 = das will ich verändern)</p>
+      <p><strong>Aktuell:</strong> Wie sehr trifft das heute auf dich zu? (1 = trifft nicht zu / 5 = trifft vollständig zu)</p>
+      <p><strong>Künftig:</strong> Wie soll es in 90 Tagen sein? (1 = trifft nicht zu / 5 = trifft vollständig zu)</p>
       <div class="scale-row">
         <div class="scale-pill"><div class="scale-num">1</div> Trifft nicht zu</div>
         <div class="scale-pill"><div class="scale-num">2</div> Wenig</div>
@@ -180,7 +180,7 @@ body { font-family: 'Georgia', serif; background: var(--cream); color: var(--tex
         <div class="scale-pill"><div class="scale-num">4</div> Weitgehend</div>
         <div class="scale-pill"><div class="scale-num">5</div> Vollständig</div>
       </div>
-      <p>Am Ende wählst du einen Schwerpunkt für die nächsten 90 Tage.</p>
+      <p>Der Unterschied zwischen «Aktuell» und «Künftig» zeigt, wo Entwicklungspotenzial liegt.</p>
       <p class="who5-note">Die ersten fünf Fragen basieren auf dem WHO-5 Well-Being Index (WHO, 2024).</p>
     </div>
     <div class="intro-card">
@@ -278,7 +278,7 @@ body { font-family: 'Georgia', serif; background: var(--cream); color: var(--tex
         <span>Aussage</span>
         <span>Aktuell</span>
         <span>Künftig</span>
-        <span>Score</span>
+        <span>Gap</span>
       </div>
       <div id="resultsBody"></div>
     </div>
@@ -432,11 +432,11 @@ function renderPage() {
       <div class="rating-row">
         <span class="rating-label">Künftig</span>
         <div class="stars-wrap">
-          <span class="star-edge">so soll es bleiben</span>
+          <span class="star-edge">trifft nicht zu</span>
           <div class="star-btns" id="i_${globalIdx}">
             ${[1,2,3,4,5].map(v => `<button class="s-btn${answers[globalIdx].i===v?' si':''}" onclick="setVal(${globalIdx},'i',${v})">${v}</button>`).join('')}
           </div>
-          <span class="star-edge right">das will ich verändern</span>
+          <span class="star-edge right">trifft vollständig zu</span>
         </div>
       </div>`;
     container.appendChild(card);
@@ -578,25 +578,27 @@ function renderCoachResults(payload) {
     modul: f.modul,
     k: payload.answers[i]?.k || 0,
     i: payload.answers[i]?.i || 0,
-    score: Math.round(((payload.answers[i]?.k || 0) + (payload.answers[i]?.i || 0)) / 2 * 10) / 10,
-    sweet: (payload.answers[i]?.k || 0) >= 4 && (payload.answers[i]?.i || 0) >= 4
+    gap: (payload.answers[i]?.i || 0) - (payload.answers[i]?.k || 0),
+    isResource: (payload.answers[i]?.k || 0) >= 4 && (payload.answers[i]?.i || 0) >= 4,
+    needsWork: (payload.answers[i]?.i || 0) > (payload.answers[i]?.k || 0) && (payload.answers[i]?.k || 0) <= 3
   }));
 
   // Matrix
   drawMatrix(scored);
 
   // Table — sorted by score ascending (lowest first = most attention needed)
-  const sorted = [...scored].sort((a, b) => a.score - b.score);
+  const sorted = [...scored].sort((a, b) => b.gap - a.gap);
   document.getElementById('resultsBody').innerHTML = sorted.map(s =>
-    `<div class="rt-row${s.sweet ? ' sweet' : ''}">
+    `<div class="rt-row${s.isResource ? ' sweet' : ''}">
       <div class="rt-name">
         <span>${s.label}</span>
-        ${s.sweet ? '<span class="sweet-badge">★ Ressource</span>' : ''}
+        ${s.isResource ? '<span class="sweet-badge">★ Ressource</span>' : ''}
+        ${s.needsWork ? '<span class="sweet-badge" style="background:rgba(192,57,43,0.15);color:#a93226;">↑ Entwicklung</span>' : ''}
         <span class="module-tag">${s.modul}</span>
       </div>
       <div><span class="pill pill-k">${s.k || '–'}</span></div>
       <div><span class="pill pill-i">${s.i || '–'}</span></div>
-      <div><span class="pill pill-s">${s.score > 0 ? s.score : '–'}</span></div>
+      <div><span class="pill pill-s" style="${s.gap > 0 ? 'background:#a93226' : s.gap === 0 ? 'background:#1B2A4A' : 'background:#1E6B3C'}">${s.gap > 0 ? '+' + s.gap : s.gap}</span></div>
     </div>`
   ).join('');
 
@@ -616,12 +618,15 @@ function drawMatrix(scored) {
     if (s.sweet) map[key].sweet = true;
   });
   const cd = Object.values(map).map(d => {
-    const avg = (d.x + d.y) / 2;
+    const gap = d.y - d.x; // positive = development wish
+    const isResource = d.x >= 4 && d.y >= 4;
+    const needsWork = d.y > d.x && d.x <= 3;
     return {
       x: d.x, y: d.y, r: 14,
-      labels: d.labels, count: d.labels.length, sweet: d.sweet,
-      bg: d.sweet ? 'rgba(200,168,75,0.88)' : (avg >= 3 ? 'rgba(26,39,68,0.75)' : 'rgba(212,221,240,0.8)'),
-      border: d.sweet ? '#a08030' : (avg >= 3 ? '#1a2744' : '#b0bcd8')
+      labels: d.labels, count: d.labels.length,
+      isResource, needsWork, gap,
+      bg: isResource ? 'rgba(200,168,75,0.88)' : (needsWork ? 'rgba(192,57,43,0.6)' : 'rgba(26,39,68,0.75)'),
+      border: isResource ? '#a08030' : (needsWork ? '#a93226' : '#1a2744')
     };
   });
 
@@ -650,27 +655,32 @@ function drawMatrix(scored) {
         }
       },
       scales: {
-        x: { min: 0, max: 5.8, title: { display: true, text: 'Aktueller Zustand', color: '#6b7a99', font: { size: 12 } }, ticks: { stepSize: 1, color: '#6b7a99' }, grid: { color: 'rgba(212,221,240,0.5)' } },
-        y: { min: 0, max: 5.8, title: { display: true, text: 'Veränderungswunsch (Künftig)', color: '#6b7a99', font: { size: 12 } }, ticks: { stepSize: 1, color: '#6b7a99' }, grid: { color: 'rgba(212,221,240,0.5)' } }
+        x: { min: 0, max: 5.8, title: { display: true, text: 'Aktuell', color: '#6b7a99', font: { size: 12 } }, ticks: { stepSize: 1, color: '#6b7a99' }, grid: { color: 'rgba(212,221,240,0.5)' } },
+        y: { min: 0, max: 5.8, title: { display: true, text: 'Künftig (in 90 Tagen)', color: '#6b7a99', font: { size: 12 } }, ticks: { stepSize: 1, color: '#6b7a99' }, grid: { color: 'rgba(212,221,240,0.5)' } }
       }
     }
   });
 
   Chart.register({ id: 'flh', afterDraw(c) {
     const ctx2 = c.ctx, xs = c.scales.x, ys = c.scales.y, ca = c.chartArea;
-    const x4 = xs.getPixelForValue(4), y4 = ys.getPixelForValue(4);
     ctx2.save();
-    ctx2.setLineDash([5, 4]); ctx2.strokeStyle = 'rgba(200,168,75,0.45)'; ctx2.lineWidth = 1;
-    ctx2.beginPath(); ctx2.moveTo(x4, ca.top); ctx2.lineTo(x4, ca.bottom); ctx2.stroke();
-    ctx2.beginPath(); ctx2.moveTo(ca.left, y4); ctx2.lineTo(ca.right, y4); ctx2.stroke();
+    // Diagonal line (Aktuell = Künftig)
+    ctx2.setLineDash([5, 4]); ctx2.strokeStyle = 'rgba(26,39,68,0.2)'; ctx2.lineWidth = 1.5;
+    ctx2.beginPath();
+    ctx2.moveTo(xs.getPixelForValue(0), ys.getPixelForValue(0));
+    ctx2.lineTo(xs.getPixelForValue(5.8), ys.getPixelForValue(5.8));
+    ctx2.stroke();
     ctx2.setLineDash([]);
+    // Labels
     ctx2.font = '500 10px sans-serif'; ctx2.fillStyle = 'rgba(26,39,68,0.28)';
-    ctx2.fillText('Ressourcen', x4 + 6, ca.top + 14);
+    ctx2.fillText('Entwicklungswunsch ↑', ca.left + 8, ca.top + 14);
+    ctx2.fillText('Zufrieden →', xs.getPixelForValue(4.5), ys.getPixelForValue(0.3));
+    // Bubble labels
     const meta = c.getDatasetMeta(0);
     meta.data.forEach((el, idx) => {
       const d = cd[idx];
       ctx2.font = '600 10px sans-serif';
-      ctx2.fillStyle = d.sweet ? 'rgba(80,56,0,0.85)' : (((d.x + d.y) / 2 >= 3) ? 'rgba(255,255,255,0.92)' : 'rgba(80,80,100,0.8)');
+      ctx2.fillStyle = d.isResource ? 'rgba(80,56,0,0.85)' : 'rgba(255,255,255,0.92)';
       ctx2.textAlign = 'center'; ctx2.fillText(String(d.count), el.x, el.y + 3.5);
     });
     ctx2.restore();
