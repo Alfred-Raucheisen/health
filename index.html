@@ -3,708 +3,706 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Well-Being Assessment</title>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<title>Well-Being Assessment — Partner Readiness Program</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root {
-  --navy: #1B2A4A;
-  --gold: #C9A84C;
-  --gold-light: #F5EDD6;
-  --cream: #FAF9F6;
-  --white: #FFFFFF;
-  --border: #DDD8CC;
-  --muted: #6B7A8D;
-  --text: #1B2A4A;
-  --green: #1E6B3C;
-  --red: #C0392B;
-  --shadow: 0 2px 12px rgba(27,42,74,0.08);
+  --navy:#1B2A4A; --gold:#C9A84C; --gold-light:#F5EDD6;
+  --cream:#FAF9F6; --muted:#6B7A8D; --border:#DDD8CC;
+  --green:#2E7D32; --red:#C62828; --amber:#E65100;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Georgia', serif; background: var(--cream); color: var(--text); min-height: 100vh; }
-.screen { display: none; }
-.screen.active { display: block; }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;}
 
-/* HERO */
-.hero { background: var(--navy); padding: 56px 24px 48px; text-align: center; }
-.hero-kicker { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-.hero h1 { font-size: clamp(26px, 5vw, 38px); font-weight: 400; color: var(--white); line-height: 1.25; margin-bottom: 12px; }
-.hero h1 em { color: var(--gold); font-style: italic; }
-.hero p { font-family: 'Helvetica Neue', sans-serif; font-size: 15px; color: rgba(255,255,255,0.65); max-width: 520px; margin: 0 auto 32px; line-height: 1.6; }
-.hero-divider { width: 40px; height: 2px; background: var(--gold); margin: 0 auto 32px; }
+/* ── Hero ── */
+.hero{background:var(--navy);padding:52px 28px 44px;text-align:center;}
+.hero-kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.hero h1{font-size:32px;font-weight:300;color:#fff;margin-bottom:4px;letter-spacing:-.5px;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero-rule{width:40px;height:1px;background:var(--gold);margin:16px auto;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.55);line-height:1.6;max-width:480px;margin:0 auto;}
 
-/* FORM */
-.form-section { background: var(--white); border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow); }
-.form-label { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: block; }
-.form-input { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 15px; font-family: 'Helvetica Neue', sans-serif; color: var(--text); background: var(--cream); outline: none; transition: border-color 0.2s; }
-.form-input:focus { border-color: var(--gold); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+/* ── Container ── */
+.wrap{max-width:680px;margin:0 auto;padding:32px 20px 60px;}
 
-/* BUTTON */
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 8px; font-family: 'Helvetica Neue', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
-.btn-primary { background: var(--gold); color: var(--navy); }
-.btn-primary:hover { background: #B8963A; }
-.btn-secondary { background: transparent; color: var(--navy); border: 1px solid var(--border); }
-.btn-secondary:hover { border-color: var(--navy); }
-.btn-full { width: 100%; justify-content: center; }
+/* ── Progress ── */
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:28px;}
+.progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease;}
 
-/* PROGRESS */
-.progress-wrap { background: var(--navy); padding: 20px 24px; position: sticky; top: 0; z-index: 10; }
-.progress-inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 16px; }
-.progress-label { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: rgba(255,255,255,0.6); white-space: nowrap; }
-.progress-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; }
-.progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s; }
-.progress-count { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--gold); white-space: nowrap; }
+/* ── Screens ── */
+.screen{display:none;}
+.screen.active{display:block;}
 
-/* QUIZ */
-.quiz-body { max-width: 760px; margin: 0 auto; padding: 32px 24px 40px; }
-.page-title { font-size: 13px; font-family: 'Helvetica Neue', sans-serif; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-.module-badge { display: inline-block; font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--gold-light); color: var(--navy); padding: 3px 10px; border-radius: 20px; margin-bottom: 20px; }
+/* ── Card base ── */
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;}
 
-/* QUESTION CARD */
-.q-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; transition: border-color 0.2s, box-shadow 0.2s; }
-.q-card.complete { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(201,168,76,0.2); }
-.q-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
-.q-name { font-size: 17px; font-weight: 400; color: var(--navy); line-height: 1.3; flex: 1; }
-.q-badge { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; color: var(--gold); text-transform: uppercase; opacity: 0; transition: opacity 0.2s; margin-left: 12px; flex-shrink: 0; margin-top: 4px; }
-.q-card.complete .q-badge { opacity: 1; }
+/* ── Intro ── */
+.intro-section{margin-bottom:20px;}
+.intro-section h2{font-size:18px;font-weight:600;margin-bottom:12px;}
+.intro-section p{font-size:14px;color:#444;line-height:1.7;margin-bottom:10px;}
 
-.rating-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.rating-row:last-child { margin-bottom: 0; }
-.rating-label { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; font-weight: 500; color: var(--muted); width: 90px; flex-shrink: 0; }
-.star-edge { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: var(--muted); flex-shrink: 0; width: 120px; text-align: right; }
-.star-edge.right { text-align: left; }
-.stars-wrap { display: flex; align-items: center; gap: 8px; }
-.star-btns { display: flex; gap: 4px; }
-.s-btn { width: 36px; height: 36px; border-radius: 6px; border: 1px solid var(--border); background: var(--cream); font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s; }
-.s-btn:hover { border-color: var(--gold); color: var(--navy); }
-.s-btn.sk { background: var(--navy); border-color: var(--navy); color: var(--white); }
-.s-btn.si { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+.how-it-works{background:var(--cream);border:1px solid var(--border);border-radius:9px;padding:18px 20px;margin:18px 0;}
+.how-it-works h3{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px;}
+.dim-row{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start;}
+.dim-label{font-size:13px;font-weight:700;color:var(--navy);min-width:90px;}
+.dim-desc{font-size:13px;color:#444;line-height:1.5;}
+.scale-demo{display:flex;gap:5px;margin:12px 0 4px;}
+.scale-demo-btn{padding:5px 10px;border-radius:5px;font-size:12px;font-weight:600;border:1px solid var(--border);background:#fff;color:var(--muted);}
+.scale-demo-btn.demo-z{background:var(--navy);color:#fff;border-color:var(--navy);}
+.scale-demo-btn.demo-w{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.scale-demo-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);}
+.how-note{font-size:12px;color:var(--muted);font-style:italic;margin-top:10px;line-height:1.5;}
 
-/* CLOSING QUESTION */
-.closing-card { background: var(--white); border: 1px solid var(--gold); border-radius: 12px; padding: 28px; margin-bottom: 16px; }
-.closing-card h3 { font-size: 18px; font-weight: 400; color: var(--navy); margin-bottom: 8px; }
-.closing-card p { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
-.closing-options { display: flex; flex-direction: column; gap: 10px; }
-.closing-opt { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; font-family: 'Helvetica Neue', sans-serif; font-size: 14px; color: var(--navy); }
-.closing-opt:hover { border-color: var(--gold); background: var(--gold-light); }
-.closing-opt.selected { border-color: var(--gold); background: var(--gold-light); font-weight: 500; }
-.closing-opt input { accent-color: var(--gold); width: 16px; height: 16px; }
+.source-badge{display:inline-block;font-size:11px;background:var(--gold-light);
+  color:var(--navy);padding:4px 12px;border-radius:20px;margin-top:4px;}
 
-/* PAGE NAV */
-.page-warn { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: var(--red); text-align: center; margin-bottom: 16px; display: none; }
-.nav-row { display: flex; gap: 12px; justify-content: space-between; align-items: center; margin-top: 24px; }
+.name-block{margin-top:22px;}
+.name-block label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);display:block;margin-bottom:6px;}
+.name-block input{width:100%;padding:10px 13px;border:1px solid var(--border);
+  border-radius:7px;font-size:14px;color:var(--navy);}
+.name-block input:focus{outline:none;border-color:var(--gold);}
+.btn-start{width:100%;margin-top:14px;padding:13px;background:var(--gold);
+  color:var(--navy);border:none;border-radius:8px;font-size:15px;
+  font-weight:700;cursor:pointer;letter-spacing:.02em;}
+.btn-start:hover{background:#b8942e;}
 
-/* INTRO */
-.intro-body { max-width: 600px; margin: 0 auto; padding: 40px 24px; }
-.intro-card { background: var(--white); border-radius: 12px; padding: 32px; box-shadow: var(--shadow); margin-bottom: 24px; }
-.intro-card h2 { font-size: 22px; font-weight: 400; margin-bottom: 16px; color: var(--navy); }
-.intro-card p { font-family: 'Helvetica Neue', sans-serif; font-size: 15px; line-height: 1.7; color: var(--muted); margin-bottom: 12px; }
-.intro-card p:last-child { margin-bottom: 0; }
-.scale-row { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
-.scale-pill { display: flex; align-items: center; gap: 6px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--muted); }
-.scale-num { width: 28px; height: 28px; border-radius: 6px; background: var(--navy); color: var(--white); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 13px; flex-shrink: 0; }
-.who5-note { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--muted); font-style: italic; margin-top: 12px; }
+/* ── Question card ── */
+.q-card{background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:22px 22px 18px;margin-bottom:12px;}
+.q-modul-badge{display:inline-block;font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;background:var(--gold-light);color:var(--navy);
+  font-weight:700;border-radius:20px;padding:3px 11px;margin-bottom:10px;}
+.q-text{font-size:15px;color:var(--navy);line-height:1.5;margin-bottom:16px;}
+.q-axes{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.q-axis-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-bottom:7px;font-weight:600;}
+.scale-row{display:flex;gap:5px;}
+.scale-btn{flex:1;padding:9px 4px;border:1px solid var(--border);border-radius:6px;
+  background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);
+  transition:all .15s;text-align:center;}
+.scale-btn:hover{border-color:var(--gold);color:var(--navy);}
+.scale-btn.sel-z{background:var(--navy);color:#fff;border-color:var(--navy);}
+.scale-btn.sel-w{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.scale-anchors{display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--muted);}
 
-/* DONE */
-.done-body { max-width: 600px; margin: 0 auto; padding: 40px 24px; text-align: center; }
-.done-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--gold-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 28px; }
-.done-body h2 { font-size: 26px; font-weight: 400; margin-bottom: 12px; color: var(--navy); }
-.done-body p { font-family: 'Helvetica Neue', sans-serif; font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+/* ── Nav ── */
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
+.btn{padding:10px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary:hover{background:#243660;}
+.btn-secondary{background:#f0f0f0;color:var(--muted);}
+.btn-secondary:hover{background:#e0e0e0;}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:#b8942e;}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+.q-counter{font-size:12px;color:var(--muted);}
 
-/* COACH VIEW */
-.coach-wrap { max-width: 800px; margin: 0 auto; padding: 32px 24px; }
-.coach-header { background: var(--navy); border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; color: var(--white); }
-.coach-header h2 { font-size: 22px; font-weight: 400; color: var(--white); margin-bottom: 4px; }
-.coach-meta { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: rgba(255,255,255,0.6); }
-.coach-meta span { color: var(--gold); }
-.section-title { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-.matrix-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-.results-table { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
-.rt-head { display: grid; grid-template-columns: 1fr 90px 110px 80px; gap: 0; background: var(--navy); padding: 12px 20px; }
-.rt-head span { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.7); text-align: center; }
-.rt-head span:first-child { text-align: left; }
-.rt-row { display: grid; grid-template-columns: 1fr 90px 110px 80px; gap: 0; padding: 14px 20px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.15s; }
-.rt-row:last-child { border-bottom: none; }
-.rt-row:hover { background: var(--cream); }
-.rt-row.sweet { background: var(--gold-light); }
-.rt-row.sweet:hover { background: #EDE3C0; }
-.rt-name { font-size: 15px; color: var(--navy); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.sweet-badge { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; background: var(--gold); color: var(--navy); padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
-.module-tag { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: var(--muted); }
-.pill { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 28px; border-radius: 6px; font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 500; margin: 0 auto; }
-.pill-k { background: rgba(27,42,74,0.08); color: var(--navy); }
-.pill-i { background: rgba(201,168,76,0.15); color: #8B6914; }
-.pill-s { background: var(--navy); color: var(--white); }
+/* ── Fokus ── */
+.fokus-intro{font-size:14px;color:#444;line-height:1.6;margin-bottom:18px;}
+.fokus-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fokus-btn{padding:13px 15px;border:2px solid var(--border);border-radius:9px;
+  background:#fff;cursor:pointer;text-align:left;transition:all .15s;}
+.fokus-btn:hover{border-color:var(--gold);}
+.fokus-btn.selected{border-color:var(--navy);background:var(--gold-light);}
+.fb-icon{font-size:19px;margin-bottom:3px;}
+.fb-label{font-size:13px;font-weight:600;color:var(--navy);}
+.fokus-hint{font-size:11px;color:var(--muted);margin-top:9px;}
 
-/* WHO5 BOX */
-.who5-box { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-.who5-score-big { font-size: 48px; font-weight: 300; color: var(--navy); line-height: 1; }
-.who5-score-label { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: var(--muted); margin-top: 4px; }
-.who5-bar-wrap { margin-top: 16px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.who5-bar { height: 100%; border-radius: 4px; transition: width 0.6s; }
-.who5-ref { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--muted); margin-top: 10px; font-style: italic; }
+/* ── Results ── */
+.results-name{text-align:center;font-size:13px;color:var(--muted);margin-bottom:24px;}
 
-/* HARADA BOX */
-.harada-box { background: var(--gold-light); border: 1px solid var(--gold); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-.harada-box h3 { font-size: 16px; font-weight: 500; color: var(--navy); margin-bottom: 8px; }
-.harada-box p { font-family: 'Helvetica Neue', sans-serif; font-size: 14px; color: var(--navy); line-height: 1.6; }
-.harada-focus { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: var(--muted); margin-top: 12px; }
+.score-block{background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:20px 22px;margin-bottom:14px;}
+.score-block h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--gold);margin-bottom:14px;}
+.score-row{display:flex;align-items:center;gap:18px;}
+.score-val{font-size:46px;font-weight:700;line-height:1;min-width:80px;}
+.score-val.green{color:var(--green);}
+.score-val.amber{color:var(--amber);}
+.score-val.red{color:var(--red);}
+.score-info{flex:1;}
+.score-label{font-size:15px;font-weight:600;margin-bottom:4px;}
+.score-interp{font-size:12px;color:#555;line-height:1.5;}
+.score-bar-wrap{background:var(--border);border-radius:4px;height:7px;margin-top:10px;}
+.score-bar{height:100%;border-radius:4px;transition:width .7s ease;}
 
-.raw-toggle { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; color: var(--muted); background: none; border: 1px solid var(--border); border-radius: 6px; padding: 8px 16px; cursor: pointer; margin-bottom: 12px; }
-.raw-toggle:hover { border-color: var(--navy); color: var(--navy); }
-.raw-data { font-family: 'Courier New', monospace; font-size: 12px; background: var(--navy); color: rgba(255,255,255,0.8); border-radius: 8px; padding: 16px; white-space: pre; display: none; overflow-x: auto; margin-bottom: 24px; line-height: 1.8; }
-.container-narrow { max-width: 600px; margin: 0 auto; padding: 32px 24px; }
+/* Matrix */
+.matrix-card{background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:20px 22px;margin-bottom:14px;}
+.matrix-card h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--gold);margin-bottom:14px;}
+.chart-container{position:relative;height:300px;}
+
+/* Table */
+.mod-table{width:100%;border-collapse:collapse;margin-top:4px;}
+.mod-table th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--muted);padding:5px 8px;text-align:left;border-bottom:2px solid var(--border);}
+.mod-table td{padding:8px 8px;font-size:13px;border-bottom:1px solid var(--border);}
+.mod-table tr:last-child td{border-bottom:none;}
+.mini-bar-wrap{background:var(--border);border-radius:3px;height:5px;width:100px;}
+.mini-bar{height:100%;border-radius:3px;}
+.zone-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.z-handeln   {background:#ffebee;color:var(--red);}
+.z-entwickeln{background:#fff8e1;color:var(--amber);}
+.z-schuetzen {background:#e3f2fd;color:#1565c0;}
+.z-beobachten{background:#f5f5f5;color:var(--muted);}
+
+/* Fokus result */
+.fokus-result{background:var(--gold-light);border:1px solid var(--gold);border-radius:10px;
+  padding:16px 20px;margin-bottom:14px;}
+.fokus-result h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--navy);margin-bottom:9px;}
+.fokus-tags{display:flex;gap:8px;flex-wrap:wrap;}
+.fokus-tag{background:var(--navy);color:#fff;font-size:13px;font-weight:600;
+  padding:5px 14px;border-radius:20px;}
+
+.raw-toggle{font-size:12px;color:var(--muted);text-decoration:underline;
+  cursor:pointer;background:none;border:none;padding:0;margin-top:6px;}
+.raw-data{background:#f5f5f5;border-radius:8px;padding:12px;font-size:11px;
+  font-family:monospace;display:none;margin-top:8px;word-break:break-all;line-height:1.5;}
+.send-status{font-size:13px;margin-top:10px;padding:9px 13px;border-radius:7px;}
+.send-ok{background:#e8f5e9;color:var(--green);}
+.send-err{background:#ffebee;color:var(--red);}
 </style>
 </head>
 <body>
+<script>emailjs.init('X5DcsZZxy0M4C--XH');</script>
 
-<!-- INTRO -->
-<div id="introScreen" class="screen active">
-  <div class="hero">
-    <div class="hero-kicker">Partner Readiness Program</div>
-    <h1>Well-Being<br><em>Assessment</em></h1>
-    <div class="hero-divider"></div>
-    <p>Ein kurzes, vertrauliches Assessment zu deinem persönlichen Wohlbefinden — als Grundlage für ein offenes Gespräch über Ressourcen und Routinen.</p>
-  </div>
-  <div class="intro-body">
-    <div class="intro-card">
-      <h2>So funktioniert's</h2>
-      <p>Das Assessment besteht aus 25 Aussagen in fünf Bereichen. Du bewertest jede Aussage auf zwei Dimensionen:</p>
-      <p><strong>Aktuell:</strong> Wie sehr trifft das heute auf dich zu? (1 = trifft nicht zu / 5 = trifft vollständig zu)</p>
-      <p><strong>Künftig:</strong> Wie soll es in 90 Tagen sein? (1 = trifft nicht zu / 5 = trifft vollständig zu)</p>
-      <div class="scale-row">
-        <div class="scale-pill"><div class="scale-num">1</div> Trifft nicht zu</div>
-        <div class="scale-pill"><div class="scale-num">2</div> Wenig</div>
-        <div class="scale-pill"><div class="scale-num">3</div> Teilweise</div>
-        <div class="scale-pill"><div class="scale-num">4</div> Weitgehend</div>
-        <div class="scale-pill"><div class="scale-num">5</div> Vollständig</div>
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-kicker">Partner Readiness Program</div>
+  <h1>Well-Being<br><em>Assessment</em></h1>
+  <div class="hero-rule"></div>
+  <div class="hero-sub">Ein kurzes, vertrauliches Assessment zu Ihrem persönlichen Wohlbefinden — als Grundlage für ein offenes Gespräch über Ressourcen und Routinen.</div>
+</div>
+
+<div class="wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <!-- ══ INTRO ══ -->
+  <div class="screen active" id="introScreen">
+    <div class="card">
+      <div class="intro-section">
+        <h2>So funktioniert's</h2>
+        <p>Das Assessment besteht aus <strong>25 Aussagen</strong> in fünf Bereichen. Sie bewerten jede Aussage auf zwei Dimensionen:</p>
       </div>
-      <p>Der Unterschied zwischen «Aktuell» und «Künftig» zeigt, wo Entwicklungspotenzial liegt.</p>
-      <p class="who5-note">Die ersten fünf Fragen basieren auf dem WHO-5 Well-Being Index (WHO, 2024).</p>
-    </div>
-    <div class="intro-card">
-      <h2>Deine Angaben</h2>
-      <div class="form-row">
-        <div>
-          <label class="form-label">Vorname</label>
-          <input class="form-input" type="text" id="firstName" placeholder="Anna" />
+
+      <div class="how-it-works">
+        <h3>Die zwei Dimensionen</h3>
+        <div class="dim-row">
+          <div class="dim-label">Zustand heute</div>
+          <div class="dim-desc">Wie sehr trifft diese Aussage im Moment auf dich zu?<br><span style="font-size:12px;color:var(--muted)">1 = trifft nicht zu &nbsp;·&nbsp; 5 = trifft vollständig zu</span></div>
         </div>
-        <div>
-          <label class="form-label">Nachname</label>
-          <input class="form-input" type="text" id="lastName" placeholder="Muster" />
+        <div class="dim-row">
+          <div class="dim-label">Wichtigkeit</div>
+          <div class="dim-desc">Wie wichtig ist dieser Bereich für deine persönliche Wirksamkeit?<br><span style="font-size:12px;color:var(--muted)">1 = unwichtig &nbsp;·&nbsp; 5 = sehr wichtig</span></div>
+        </div>
+
+        <div style="margin-top:14px;font-size:12px;color:var(--muted);margin-bottom:6px;">Beispiel: Zwei separate Skalen, je 1–5</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px;">Zustand heute</div>
+            <div class="scale-demo">
+              <div class="scale-demo-btn">1</div>
+              <div class="scale-demo-btn">2</div>
+              <div class="scale-demo-btn demo-z">3</div>
+              <div class="scale-demo-btn">4</div>
+              <div class="scale-demo-btn">5</div>
+            </div>
+            <div class="scale-demo-labels"><span>Trifft nicht zu</span><span>Trifft voll zu</span></div>
+          </div>
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px;">Wichtigkeit</div>
+            <div class="scale-demo">
+              <div class="scale-demo-btn">1</div>
+              <div class="scale-demo-btn">2</div>
+              <div class="scale-demo-btn">3</div>
+              <div class="scale-demo-btn demo-w">4</div>
+              <div class="scale-demo-btn">5</div>
+            </div>
+            <div class="scale-demo-labels"><span>Unwichtig</span><span>Sehr wichtig</span></div>
+          </div>
+        </div>
+
+        <div class="how-note">
+          Die Kombination aus tiefem Zustand und hoher Wichtigkeit zeigt, wo konkreter Handlungsbedarf liegt — und wo eine kleine Routine den grössten Unterschied machen würde.
         </div>
       </div>
-      <div style="margin-top:16px;">
-        <label class="form-label">Firma</label>
-        <input class="form-input" type="text" id="kanzlei" placeholder="Muster AG" />
+
+      <p style="font-size:13px;color:#555;line-height:1.6;">Die ersten fünf Fragen basieren auf dem <strong>WHO-5 Well-Being Index</strong> (Weltgesundheitsorganisation) — einem wissenschaftlich validierten Instrument zur Erfassung des allgemeinen Wohlbefindens.</p>
+      <div><span class="source-badge">WHO-5 Well-Being Index · WHO, 2024</span></div>
+
+      <div class="name-block">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;">
+          <div>
+            <label>Ihr Name</label>
+            <input type="text" id="userName" placeholder="Vorname Nachname">
+          </div>
+          <div>
+            <label>Datum</label>
+            <input type="date" id="dateInput" style="padding:10px 13px;border:1px solid var(--border);border-radius:7px;font-size:14px;color:var(--navy);background:#fff;">
+          </div>
+        </div>
+        <button class="btn-start" onclick="startAssessment()">Assessment starten →</button>
       </div>
-      <div style="margin-top:16px;">
-        <label class="form-label">Datum</label>
-        <input class="form-input" type="date" id="dateInput" />
+    </div>
+  </div>
+
+  <!-- ══ QUESTIONS ══ -->
+  <div class="screen" id="questionScreen">
+    <div id="questionCards"></div>
+    <div class="nav">
+      <button class="btn btn-secondary" id="btnBack" onclick="goBack()">← Zurück</button>
+      <span class="q-counter" id="qCounter"></span>
+      <button class="btn btn-primary" id="btnNext" onclick="goNext()" disabled>Weiter →</button>
+    </div>
+  </div>
+
+  <!-- ══ FOKUS ══ -->
+  <div class="screen" id="fokusScreen">
+    <div class="card">
+      <div class="q-modul-badge">Abschlussfrage</div>
+      <p class="fokus-intro" style="margin-top:10px;">In welchem Bereich würdest du in den nächsten 90 Tagen am ehesten eine kleine, konkrete Routine einführen? Wähle <strong>maximal 2 Bereiche</strong>.</p>
+      <div class="fokus-grid" id="fokusGrid"></div>
+      <div class="fokus-hint" id="fokusHint"></div>
+      <div class="nav" style="margin-top:20px;">
+        <button class="btn btn-secondary" onclick="goBackToQuestions()">← Zurück</button>
+        <button class="btn btn-gold" id="btnAuswerten" onclick="showResults()" disabled>Auswertung anzeigen →</button>
       </div>
     </div>
-    <div id="introWarn" style="font-family:'Helvetica Neue',sans-serif;font-size:13px;color:var(--red);text-align:center;margin-bottom:16px;display:none;">Bitte alle Felder ausfüllen.</div>
-    <button class="btn btn-primary btn-full" onclick="startQuiz()">Assessment starten →</button>
   </div>
-</div>
 
-<!-- QUIZ -->
-<div id="quizScreen" class="screen">
-  <div class="progress-wrap">
-    <div class="progress-inner">
-      <span class="progress-label" id="progressLabel">Seite 1 von 6</span>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      <span class="progress-count" id="pageCounter">1 / 6</span>
-    </div>
-  </div>
-  <div class="quiz-body">
-    <div class="page-title" id="pageTitle">Well-Being Assessment</div>
-    <div id="questionsContainer"></div>
-    <div class="page-warn" id="pageWarn">Bitte alle Fragen auf dieser Seite beantworten.</div>
-    <div class="nav-row">
-      <button class="btn btn-secondary" id="btnPrev" onclick="changePage(-1)">← Zurück</button>
-      <button class="btn btn-primary" id="btnNext" onclick="changePage(1)">Weiter →</button>
-    </div>
-  </div>
-</div>
+  <!-- ══ RESULTS ══ -->
+  <div class="screen" id="resultsScreen">
+    <div class="results-name" id="resultsName"></div>
 
-<!-- DONE -->
-<div id="doneScreen" class="screen">
-  <div class="done-body">
-    <div class="done-icon">✓</div>
-    <h2>Vielen Dank!</h2>
-    <p>Deine Antworten wurden übermittelt. Dein Coach erhält die Auswertung per E-Mail und bespricht die Ergebnisse mit dir im nächsten Gespräch.</p>
-    <p id="doneName" style="font-weight:500;color:var(--navy);"></p>
-  </div>
-</div>
-
-<!-- COACH VIEW -->
-<div id="coachScreen" class="screen">
-  <div class="hero" style="padding:32px 24px;">
-    <div class="hero-kicker">Coach-Auswertung</div>
-    <h1>Well-Being<br><em>Assessment</em></h1>
-  </div>
-  <div class="coach-wrap">
-    <div class="coach-header">
-      <h2 id="coachName">—</h2>
-      <div class="coach-meta"><span id="coachKanzlei">—</span> · <span id="coachDate">—</span></div>
-    </div>
-
-    <div class="section-title">WHO-5 Well-Being Score</div>
-    <div class="who5-box">
-      <div class="who5-score-big" id="who5Score">—</div>
-      <div class="who5-score-label">von 100 möglichen Punkten</div>
-      <div class="who5-bar-wrap"><div class="who5-bar" id="who5Bar"></div></div>
-      <div class="who5-ref" id="who5Ref"></div>
-    </div>
-
-    <div class="section-title">Harada-Fokus (90-Tage-Schwerpunkt)</div>
-    <div class="harada-box">
-      <h3 id="haradaTitle">—</h3>
-      <p id="haradaText">—</p>
-      <div class="harada-focus" id="haradaFocus"></div>
-    </div>
-
-    <div class="section-title">Sweet-Spot-Matrix (Zustand × Veränderungswille)</div>
-    <div class="matrix-wrap">
-      <div style="position:relative;width:100%;height:420px;"><canvas id="bubbleChart"></canvas></div>
-      <div id="overlapNote" style="margin-top:10px;font-size:12px;color:var(--muted)"></div>
-    </div>
-
-    <div class="section-title">Alle Bereiche nach Score</div>
-    <div class="results-table">
-      <div class="rt-head">
-        <span>Aussage</span>
-        <span>Aktuell</span>
-        <span>Künftig</span>
-        <span>Gap</span>
+    <!-- WHO-5 -->
+    <div class="score-block">
+      <h3>WHO-5 · Wohlbefinden-Index</h3>
+      <div class="score-row">
+        <div class="score-val" id="who5Val"></div>
+        <div class="score-info">
+          <div class="score-label" id="who5Label"></div>
+          <div class="score-interp" id="who5Interp"></div>
+          <div class="score-bar-wrap"><div class="score-bar" id="who5Bar"></div></div>
+        </div>
       </div>
-      <div id="resultsBody"></div>
+    </div>
+
+    <!-- Matrix -->
+    <div class="matrix-card">
+      <h3>Zustand × Wichtigkeit — Übersicht</h3>
+      <div class="chart-container"><canvas id="bubbleChart"></canvas></div>
+      <div id="overlapNote" style="font-size:11px;color:var(--muted);margin-top:6px;"></div>
+    </div>
+
+    <!-- Modules table -->
+    <div class="matrix-card">
+      <h3>Bereiche im Detail</h3>
+      <table class="mod-table">
+        <thead>
+          <tr>
+            <th>Bereich</th>
+            <th>Zustand Ø</th>
+            <th>Wichtigkeit Ø</th>
+            <th>Handlungsbedarf</th>
+            <th>Zone</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Fokus -->
+    <div class="fokus-result">
+      <h3>Fokus für die nächsten 90 Tage</h3>
+      <div class="fokus-tags" id="fokusResultTags"></div>
     </div>
 
     <button class="raw-toggle" onclick="toggleRaw()">Rohdaten anzeigen</button>
     <div class="raw-data" id="rawData"></div>
-    <button class="btn btn-secondary" onclick="restartCoach()">Neue Auswertung</button>
+    <div id="sendStatus"></div>
+    <div class="nav" style="margin-top:20px;">
+      <button class="btn btn-secondary" onclick="restartCoach()">Neue Auswertung</button>
+    </div>
   </div>
-</div>
+
+</div><!-- /wrap -->
 
 <script>
-emailjs.init('X5DcsZZxy0M4C--XH');
+// ══════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════
 const EMAILJS_SERVICE  = 'service_yw6gsbd';
 const EMAILJS_TEMPLATE = 'template_hrrfxks';
 
-// ── Fragen ────────────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════
+// FRAGEN — 25 Aussagen, alle Zustand × Wichtigkeit
+// ══════════════════════════════════════════
 const FRAGEN = [
-  // Modul A: WHO-5 (5 Fragen)
-  { label: 'Ich war froh und guter Stimmung', modul: 'WHO-5' },
-  { label: 'Ich habe mich ruhig und entspannt gefühlt', modul: 'WHO-5' },
-  { label: 'Ich habe mich energisch und aktiv gefühlt', modul: 'WHO-5' },
-  { label: 'Ich habe mich beim Aufwachen frisch und ausgeruht gefühlt', modul: 'WHO-5' },
-  { label: 'Mein Alltag war voller Dinge, die mich interessieren', modul: 'WHO-5' },
-  // Modul B: Körper & Bewegung (5 Fragen)
-  { label: 'Mein Körper fühlt sich leistungsfähig und belastbar an', modul: 'Körper & Bewegung' },
-  { label: 'Ich bewege mich so viel, wie ich mir das wünsche', modul: 'Körper & Bewegung' },
-  { label: 'Nach körperlicher Anstrengung erhole ich mich schnell', modul: 'Körper & Bewegung' },
-  { label: 'Mein Körper gibt mir selten Signale, die ich ignorieren muss', modul: 'Körper & Bewegung' },
-  { label: 'Ich bin zufrieden damit, wie ich körperlich für mich sorge', modul: 'Körper & Bewegung' },
-  // Modul C: Schlaf & Erholung (5 Fragen)
-  { label: 'Ich wache morgens mit dem Gefühl auf, wirklich geschlafen zu haben', modul: 'Schlaf & Erholung' },
-  { label: 'Ich kann abends gut abschalten, ohne an offene Pendenzen zu denken', modul: 'Schlaf & Erholung' },
-  { label: 'Meine Ferien und freien Tage laden mich wirklich auf', modul: 'Schlaf & Erholung' },
-  { label: 'Ich habe Rituale, die mir helfen, vom Arbeitsalltag umzuschalten', modul: 'Schlaf & Erholung' },
-  { label: 'Nach einem langen Arbeitstag habe ich noch Energie für mein Privatleben', modul: 'Schlaf & Erholung' },
-  // Modul D: Soziale Energie (5 Fragen)
-  { label: 'Meine engen Beziehungen geben mir Kraft — nicht nur Verpflichtungen', modul: 'Soziale Energie' },
-  { label: 'Ich habe genug Zeit für Menschen, die mir wirklich wichtig sind', modul: 'Soziale Energie' },
-  { label: 'Ich pflege Freundschaften aktiv, nicht nur wenn es sich ergibt', modul: 'Soziale Energie' },
-  { label: 'Ich fühle mich selten einsam oder sozial isoliert', modul: 'Soziale Energie' },
-  { label: 'Mein soziales Leben ausserhalb der Arbeit bereichert mich', modul: 'Soziale Energie' },
-  // Modul E: Kognitive Kapazität (5 Fragen)
-  { label: 'Ich kann mich über längere Zeit konzentrieren ohne abzudriften', modul: 'Kognitive Kapazität' },
-  { label: 'Ich erlebe regelmässig Momente echter Freude oder Flow in meiner Arbeit', modul: 'Kognitive Kapazität' },
-  { label: 'Ich gehe mit Rückschlägen und Kritik konstruktiv um', modul: 'Kognitive Kapazität' },
-  { label: 'Mein Kopf ist klar — ich fühle mich selten mental überlastet', modul: 'Kognitive Kapazität' },
-  { label: 'Ich habe das Gefühl, mein Leben aktiv zu gestalten — nicht nur zu reagieren', modul: 'Kognitive Kapazität' },
+  // Modul A — WHO-5 (5)
+  { label:'Ich war froh und guter Stimmung.',                                    modul:'WHO-5' },
+  { label:'Ich habe mich ruhig und entspannt gefühlt.',                          modul:'WHO-5' },
+  { label:'Ich habe mich energisch und aktiv gefühlt.',                          modul:'WHO-5' },
+  { label:'Ich habe mich beim Aufwachen frisch und ausgeruht gefühlt.',          modul:'WHO-5' },
+  { label:'Mein Alltag war voller Dinge, die mich interessieren.',               modul:'WHO-5' },
+  // Modul B — Körper & Bewegung (5)
+  { label:'Mein Körper fühlt sich leistungsfähig und belastbar an.',             modul:'Körper & Bewegung' },
+  { label:'Ich bewege mich so viel, wie ich mir das wünsche.',                   modul:'Körper & Bewegung' },
+  { label:'Nach körperlicher Anstrengung erhole ich mich schnell.',              modul:'Körper & Bewegung' },
+  { label:'Mein Körper gibt mir selten Signale, die ich ignorieren muss.',       modul:'Körper & Bewegung' },
+  { label:'Ich bin zufrieden damit, wie ich körperlich für mich sorge.',         modul:'Körper & Bewegung' },
+  // Modul C — Schlaf & Erholung (5)
+  { label:'Ich wache morgens mit dem Gefühl auf, wirklich geschlafen zu haben.', modul:'Schlaf & Erholung' },
+  { label:'Ich kann abends gut abschalten, ohne an offene Pendenzen zu denken.', modul:'Schlaf & Erholung' },
+  { label:'Meine Ferien und freien Tage laden mich wirklich auf.',               modul:'Schlaf & Erholung' },
+  { label:'Ich habe Rituale, die mir helfen, vom Arbeitsalltag umzuschalten.',   modul:'Schlaf & Erholung' },
+  { label:'Nach einem langen Arbeitstag habe ich noch Energie für mein Privatleben.', modul:'Schlaf & Erholung' },
+  // Modul D — Soziale Energie (5)
+  { label:'Meine engen Beziehungen geben mir Kraft — nicht nur Verpflichtungen.',modul:'Soziale Energie' },
+  { label:'Ich habe genug Zeit für Menschen, die mir wirklich wichtig sind.',    modul:'Soziale Energie' },
+  { label:'Ich pflege Freundschaften aktiv, nicht nur wenn es sich ergibt.',     modul:'Soziale Energie' },
+  { label:'Ich fühle mich selten einsam oder sozial isoliert.',                  modul:'Soziale Energie' },
+  { label:'Mein soziales Leben ausserhalb der Arbeit bereichert mich.',          modul:'Soziale Energie' },
+  // Modul E — Mentales & Kognition (5)
+  { label:'Ich kann mich über längere Zeit konzentrieren ohne abzudriften.',      modul:'Mentales & Kognition' },
+  { label:'Ich erlebe regelmässig Momente echter Freude oder Flow in meiner Arbeit.', modul:'Mentales & Kognition' },
+  { label:'Ich gehe mit Rückschlägen und Kritik konstruktiv um.',                modul:'Mentales & Kognition' },
+  { label:'Mein Kopf ist klar — ich fühle mich selten mental überlastet.',       modul:'Mentales & Kognition' },
+  { label:'Ich habe das Gefühl, mein Leben aktiv zu gestalten — nicht nur zu reagieren.', modul:'Mentales & Kognition' },
 ];
 
-const FOKUS_OPTIONS = [
-  'Körper & Bewegung',
-  'Schlaf & Erholung',
-  'Soziale Energie',
-  'Kognitive Kapazität',
-  'Allgemeines Wohlbefinden (WHO-5)',
+const MODUL_ORDER = ['WHO-5','Körper & Bewegung','Schlaf & Erholung','Soziale Energie','Mentales & Kognition'];
+const MODUL_COLORS = ['#1B2A4A','#C9A84C','#2E7D32','#6B7A8D','#8B2438'];
+
+const FOKUS_OPTIONEN = [
+  { id:'koerper',    icon:'🏃', label:'Körper & Bewegung'   },
+  { id:'schlaf',     icon:'😴', label:'Schlaf & Erholung'   },
+  { id:'soziales',   icon:'🤝', label:'Soziale Energie'     },
+  { id:'mentales',   icon:'🧠', label:'Mentales & Kognition'},
+  { id:'ernaehrung', icon:'🥗', label:'Ernährung & Energie' },
+  { id:'sinn',       icon:'🧭', label:'Sinn & Werte'        },
 ];
 
-const PAGES_PER_GROUP = 5; // 5 Fragen pro Seite
-const TOTAL_PAGES = 6; // 5 Inhaltsseiten + 1 Abschlussseite
-
-let answers = FRAGEN.map(() => ({ k: null, i: null }));
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let answers       = FRAGEN.map(()=>({z:null,w:null}));
 let fokusSelected = [];
-let cur = 0;
-let ci = null;
+let userName      = '';
+let cur           = 0; // page index (3 questions per page)
 
-// ── Init ──────────────────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
-  const p = new URLSearchParams(location.search).get('coach');
-  if (p) {
-    try { renderCoachResults(JSON.parse(atob(p))); } catch(e) {}
-  }
-});
+const PAGES = [];
+for(let i=0;i<FRAGEN.length;i+=3) PAGES.push([i,i+1,i+2].filter(j=>j<FRAGEN.length));
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function startQuiz() {
-  const fn = document.getElementById('firstName').value.trim();
-  const ln = document.getElementById('lastName').value.trim();
-  const kz = document.getElementById('kanzlei').value.trim();
-  const dt = document.getElementById('dateInput').value;
-  if (!fn || !ln || !kz || !dt) {
-    document.getElementById('introWarn').style.display = 'block'; return;
-  }
-  document.getElementById('introWarn').style.display = 'none';
+// ══════════════════════════════════════════
+// FLOW
+// ══════════════════════════════════════════
+function startAssessment() {
+  userName = document.getElementById('userName').value.trim() || 'Unbekannt';
+  showScreen('questionScreen');
   cur = 0;
   renderPage();
-  showScreen('quizScreen');
 }
 
-// ── Page rendering ────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goNext() {
+  if(!pageComplete()) return;
+  if(cur < PAGES.length-1){ cur++; renderPage(); }
+  else showFokus();
+}
+
+function goBack() {
+  if(cur>0){ cur--; renderPage(); }
+}
+
+function goBackToQuestions() {
+  showScreen('questionScreen');
+  cur = PAGES.length-1;
+  renderPage();
+}
+
+// ══════════════════════════════════════════
+// RENDER PAGE
+// ══════════════════════════════════════════
 function renderPage() {
-  const container = document.getElementById('questionsContainer');
+  updateProgress();
+  const indices = PAGES[cur];
+  const container = document.getElementById('questionCards');
   container.innerHTML = '';
-  document.getElementById('pageWarn').style.display = 'none';
 
-  const totalPages = TOTAL_PAGES;
-  const pct = Math.round((cur / totalPages) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `Seite ${cur + 1} von ${totalPages}`;
-  document.getElementById('pageCounter').textContent = `${cur + 1} / ${totalPages}`;
+  document.getElementById('qCounter').textContent = `Seite ${cur+1} von ${PAGES.length}`;
+  document.getElementById('btnBack').disabled = (cur===0);
 
-  document.getElementById('btnPrev').style.visibility = cur === 0 ? 'hidden' : 'visible';
-  document.getElementById('btnNext').textContent = cur === totalPages - 1 ? 'Abschliessen →' : 'Weiter →';
-
-  // Abschlussseite (Seite 6)
-  if (cur === 5) {
-    document.getElementById('pageTitle').textContent = 'Schwerpunkt für die nächsten 90 Tage';
-    renderClosingPage(container);
-    return;
-  }
-
-  // Fragebogen-Seiten 1–5
-  const startIdx = cur * PAGES_PER_GROUP;
-  const pageItems = FRAGEN.slice(startIdx, startIdx + PAGES_PER_GROUP);
-  const modulName = pageItems[0].modul;
-
-  document.getElementById('pageTitle').textContent = modulName === 'WHO-5'
-    ? 'In den letzten zwei Wochen...'
-    : modulName;
-
-  const badge = document.createElement('div');
-  badge.className = 'module-badge';
-  badge.textContent = modulName === 'WHO-5' ? 'WHO-5 Well-Being Index' : `Modul: ${modulName}`;
-  container.appendChild(badge);
-
-  pageItems.forEach((frage, localIdx) => {
-    const globalIdx = startIdx + localIdx;
-    const card = document.createElement('div');
-    card.className = 'q-card' + (answers[globalIdx].k && answers[globalIdx].i ? ' complete' : '');
-    card.id = `card_${globalIdx}`;
-    card.innerHTML = `
-      <div class="q-header">
-        <div class="q-name">${frage.label}</div>
-        <div class="q-badge">✓</div>
-      </div>
-      <div class="rating-row">
-        <span class="rating-label">Aktuell</span>
-        <div class="stars-wrap">
-          <span class="star-edge">trifft nicht zu</span>
-          <div class="star-btns" id="k_${globalIdx}">
-            ${[1,2,3,4,5].map(v => `<button class="s-btn${answers[globalIdx].k===v?' sk':''}" onclick="setVal(${globalIdx},'k',${v})">${v}</button>`).join('')}
+  indices.forEach(qi => {
+    const f   = FRAGEN[qi];
+    const ans = answers[qi];
+    const div = document.createElement('div');
+    div.className = 'q-card';
+    div.innerHTML = `
+      <div class="q-modul-badge">${f.modul}</div>
+      <div class="q-text">${f.label}</div>
+      <div class="q-axes">
+        <div>
+          <div class="q-axis-label">Zustand heute</div>
+          <div class="scale-row">
+            ${[1,2,3,4,5].map(v=>`
+              <button class="scale-btn ${ans.z===v?'sel-z':''}"
+                onclick="setAns(${qi},'z',${v})">
+                ${v}
+              </button>`).join('')}
           </div>
-          <span class="star-edge right">trifft vollständig zu</span>
+          <div class="scale-anchors"><span>Trifft nicht zu</span><span>Trifft voll zu</span></div>
         </div>
-      </div>
-      <div class="rating-row">
-        <span class="rating-label">Künftig</span>
-        <div class="stars-wrap">
-          <span class="star-edge">trifft nicht zu</span>
-          <div class="star-btns" id="i_${globalIdx}">
-            ${[1,2,3,4,5].map(v => `<button class="s-btn${answers[globalIdx].i===v?' si':''}" onclick="setVal(${globalIdx},'i',${v})">${v}</button>`).join('')}
+        <div>
+          <div class="q-axis-label">Wichtigkeit für meine Wirksamkeit</div>
+          <div class="scale-row">
+            ${[1,2,3,4,5].map(v=>`
+              <button class="scale-btn ${ans.w===v?'sel-w':''}"
+                onclick="setAns(${qi},'w',${v})">
+                ${v}
+              </button>`).join('')}
           </div>
-          <span class="star-edge right">trifft vollständig zu</span>
+          <div class="scale-anchors"><span>Unwichtig</span><span>Sehr wichtig</span></div>
         </div>
       </div>`;
-    container.appendChild(card);
+    container.appendChild(div);
   });
+
+  updateNextBtn();
 }
 
-function renderClosingPage(container) {
-  const card = document.createElement('div');
-  card.className = 'closing-card';
-  card.innerHTML = `
-    <h3>Wo liegt dein Fokus für die nächsten 90 Tage?</h3>
-    <p>Wähle maximal 2 Bereiche, in denen du eine konkrete, kleine Routine einführen möchtest.</p>
-    <div class="closing-options">
-      ${FOKUS_OPTIONS.map((opt, i) => `
-        <div class="closing-opt${fokusSelected.includes(opt) ? ' selected' : ''}" id="fokus_${i}" onclick="toggleFokus('${opt}', ${i})">
-          <span style="width:18px;height:18px;border:2px solid var(--gold);border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:${fokusSelected.includes(opt) ? 'var(--gold)' : 'transparent'}">
-            ${fokusSelected.includes(opt) ? '<span style="color:var(--navy);font-size:12px;font-weight:700">✓</span>' : ''}
-          </span>
-          ${opt}
-        </div>`).join('')}
-    </div>`;
-  container.appendChild(card);
-}
-
-function toggleFokus(opt, idx) {
-  if (fokusSelected.includes(opt)) {
-    fokusSelected = fokusSelected.filter(f => f !== opt);
-  } else {
-    if (fokusSelected.length >= 2) return;
-    fokusSelected.push(opt);
-  }
-  // Re-render closing page to reflect changes
-  const container = document.getElementById('questionsContainer');
-  container.innerHTML = '';
-  renderClosingPage(container);
-}
-
-function setVal(idx, dim, val) {
-  answers[idx][dim] = val;
-  const btns = document.querySelectorAll(`#${dim}_${idx} .s-btn`);
-  btns.forEach((b, i) => {
-    b.classList.toggle(dim === 'k' ? 'sk' : 'si', i + 1 === val);
-  });
-  if (answers[idx].k && answers[idx].i) {
-    document.getElementById(`card_${idx}`)?.classList.add('complete');
-  }
-}
-
-function changePage(dir) {
-  if (cur === 5) {
-    // Abschlussseite — mindestens 1 Fokus nötig
-    if (fokusSelected.length === 0) {
-      document.getElementById('pageWarn').textContent = 'Bitte mindestens einen Schwerpunkt wählen.';
-      document.getElementById('pageWarn').style.display = 'block';
-      return;
-    }
-    submitQuiz(); return;
-  }
-
-  if (dir === 1) {
-    const startIdx = cur * PAGES_PER_GROUP;
-    const incomplete = answers.slice(startIdx, startIdx + PAGES_PER_GROUP).some(a => !a.k || !a.i);
-    if (incomplete) {
-      document.getElementById('pageWarn').style.display = 'block'; return;
-    }
-  }
-  cur = Math.max(0, Math.min(TOTAL_PAGES - 1, cur + dir));
+function setAns(qi, dim, val) {
+  answers[qi][dim] = val;
   renderPage();
-  window.scrollTo(0, 0);
 }
 
-// ── Submit ────────────────────────────────────────────────────────────────────
-function submitQuiz() {
-  const fn = document.getElementById('firstName').value.trim();
-  const ln = document.getElementById('lastName').value.trim();
-  const kz = document.getElementById('kanzlei').value.trim();
-  const dt = document.getElementById('dateInput').value;
-  const name = fn + ' ' + ln;
-
-  const who5Score = calcWHO5();
-  const payload = { name, kanzlei: kz, date: dt, answers: answers.map(a => ({ k: a.k, i: a.i })), fokus: fokusSelected, who5: who5Score };
-  const encoded = btoa(JSON.stringify(payload));
-  const coachUrl = location.origin + location.pathname + '?coach=' + encoded;
-
-  const raw = FRAGEN.map((f, i) => `${f.label}: Z=${answers[i].k} V=${answers[i].i}`).join('\n')
-    + `\n\nWHO-5 Score: ${who5Score}/100`
-    + `\nFokus: ${fokusSelected.join(', ')}`;
-
-  emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
-    coachee_name: name,
-    kanzlei: kz,
-    date: dt,
-    coach_url: coachUrl,
-    who5_score: who5Score,
-    fokus: fokusSelected.join(', '),
-    raw_data: raw
-  });
-
-  document.getElementById('doneName').textContent = name + ' · ' + kz;
-  showScreen('doneScreen');
+function pageComplete() {
+  return PAGES[cur].every(qi => answers[qi].z!=null && answers[qi].w!=null);
 }
 
-function calcWHO5() {
-  const sum = answers.slice(0, 5).reduce((acc, a) => acc + (a.k || 0), 0);
-  // WHO-5: raw 5–25 mapped to 0–100 (subtract 5, divide by 20, multiply by 100)
-  return Math.round(((sum - 5) / 20) * 100);
+function updateNextBtn() {
+  document.getElementById('btnNext').disabled = !pageComplete();
 }
 
-// ── Coach Results ─────────────────────────────────────────────────────────────
-function renderCoachResults(payload) {
-  showScreen('coachScreen');
-  document.getElementById('coachName').textContent = payload.name || '—';
-  document.getElementById('coachKanzlei').textContent = payload.kanzlei || '—';
-  document.getElementById('coachDate').textContent = payload.date || '—';
-
-  // WHO-5
-  const w5 = payload.who5 ?? 0;
-  document.getElementById('who5Score').textContent = w5;
-  const bar = document.getElementById('who5Bar');
-  bar.style.width = w5 + '%';
-  bar.style.background = w5 >= 52 ? '#1E6B3C' : w5 >= 28 ? '#C9A84C' : '#C0392B';
-  document.getElementById('who5Ref').textContent = w5 >= 52
-    ? 'Unauffällig — kein Hinweis auf psychische Belastung (Richtwert: ≥ 52)'
-    : w5 >= 28
-    ? 'Leicht eingeschränkt — Gespräch empfohlen (Richtwert: 28–51)'
-    : 'Stark eingeschränkt — vertiefte Abklärung empfehlenswert (Richtwert: < 28)';
-
-  // Harada Fokus
-  const fokus = payload.fokus || [];
-  document.getElementById('haradaTitle').textContent = fokus.length ? fokus.join(' & ') : '—';
-  document.getElementById('haradaText').textContent = fokus.length
-    ? `Der Coachee möchte in den nächsten 90 Tagen eine konkrete Routine in den Bereichen ${fokus.join(' und ')} einführen.`
-    : 'Kein Fokus angegeben.';
-  document.getElementById('haradaFocus').textContent = '→ Harada Bereich 8: Gesundheit & körperliche Grundlage';
-
-  // Scored items
-  const scored = FRAGEN.map((f, i) => ({
-    label: f.label,
-    modul: f.modul,
-    k: payload.answers[i]?.k || 0,
-    i: payload.answers[i]?.i || 0,
-    gap: (payload.answers[i]?.i || 0) - (payload.answers[i]?.k || 0),
-    isResource: (payload.answers[i]?.k || 0) >= 4 && (payload.answers[i]?.i || 0) >= 4,
-    needsWork: (payload.answers[i]?.i || 0) > (payload.answers[i]?.k || 0) && (payload.answers[i]?.k || 0) <= 3
-  }));
-
-  // Matrix
-  drawMatrix(scored);
-
-  // Table — sorted by score ascending (lowest first = most attention needed)
-  const sorted = [...scored].sort((a, b) => b.gap - a.gap);
-  document.getElementById('resultsBody').innerHTML = sorted.map(s =>
-    `<div class="rt-row${s.isResource ? ' sweet' : ''}">
-      <div class="rt-name">
-        <span>${s.label}</span>
-        ${s.isResource ? '<span class="sweet-badge">★ Ressource</span>' : ''}
-        ${s.needsWork ? '<span class="sweet-badge" style="background:rgba(192,57,43,0.15);color:#a93226;">↑ Entwicklung</span>' : ''}
-        <span class="module-tag">${s.modul}</span>
-      </div>
-      <div><span class="pill pill-k">${s.k || '–'}</span></div>
-      <div><span class="pill pill-i">${s.i || '–'}</span></div>
-      <div><span class="pill pill-s" style="${s.gap > 0 ? 'background:#a93226' : s.gap === 0 ? 'background:#1B2A4A' : 'background:#1E6B3C'}">${s.gap > 0 ? '+' + s.gap : s.gap}</span></div>
-    </div>`
-  ).join('');
-
-  // Raw
-  document.getElementById('rawData').textContent =
-    FRAGEN.map((f, i) => `${f.label}: Z=${payload.answers[i]?.k} V=${payload.answers[i]?.i}`).join('\n')
-    + `\n\nWHO-5: ${payload.who5}/100\nFokus: ${(payload.fokus||[]).join(', ')}`;
+function updateProgress(fokus=false) {
+  const total = PAGES.length + 1;
+  const done  = fokus ? PAGES.length : cur;
+  document.getElementById('progressFill').style.width = (done/total*100)+'%';
 }
 
-// ── Matrix ────────────────────────────────────────────────────────────────────
-function drawMatrix(scored) {
-  const map = {};
-  scored.forEach(s => {
-    const key = s.k + '_' + s.i;
-    if (!map[key]) map[key] = { x: s.k, y: s.i, labels: [], sweet: false };
-    map[key].labels.push(s.label.length > 35 ? s.label.substring(0, 33) + '…' : s.label);
-    if (s.sweet) map[key].sweet = true;
-  });
-  const cd = Object.values(map).map(d => {
-    const gap = d.y - d.x; // positive = development wish
-    const isResource = d.x >= 4 && d.y >= 4;
-    const needsWork = d.y > d.x && d.x <= 3;
-    return {
-      x: d.x, y: d.y, r: 14,
-      labels: d.labels, count: d.labels.length,
-      isResource, needsWork, gap,
-      bg: isResource ? 'rgba(200,168,75,0.88)' : (needsWork ? 'rgba(192,57,43,0.6)' : 'rgba(26,39,68,0.75)'),
-      border: isResource ? '#a08030' : (needsWork ? '#a93226' : '#1a2744')
-    };
-  });
+// ══════════════════════════════════════════
+// FOKUS
+// ══════════════════════════════════════════
+function showFokus() {
+  showScreen('fokusScreen');
+  updateProgress(true);
+  renderFokus();
+}
 
-  if (ci) ci.destroy();
+function renderFokus() {
+  document.getElementById('fokusGrid').innerHTML = FOKUS_OPTIONEN.map(o=>`
+    <button class="fokus-btn ${fokusSelected.includes(o.id)?'selected':''}"
+      onclick="toggleFokus('${o.id}')">
+      <div class="fb-icon">${o.icon}</div>
+      <div class="fb-label">${o.label}</div>
+    </button>`).join('');
+  const n = fokusSelected.length;
+  document.getElementById('fokusHint').textContent =
+    n===0 ? 'Bitte wählen Sie mindestens einen Bereich.' :
+    n===1 ? 'Sie können noch einen weiteren Bereich wählen.' :
+    'Maximal 2 Bereiche gewählt.';
+  document.getElementById('btnAuswerten').disabled = (n===0);
+}
+
+function toggleFokus(id) {
+  if(fokusSelected.includes(id)){
+    fokusSelected = fokusSelected.filter(x=>x!==id);
+  } else {
+    if(fokusSelected.length>=2) return;
+    fokusSelected.push(id);
+  }
+  renderFokus();
+}
+
+// ══════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════
+function showResults() {
+  showScreen('resultsScreen');
+  document.getElementById('progressFill').style.width='100%';
+  document.getElementById('resultsName').textContent =
+    userName + ' · ' + new Date().toLocaleDateString('de-CH');
+
+  // ── WHO-5 ──
+  const who5idx = FRAGEN.map((f,i)=>f.modul==='WHO-5'?i:-1).filter(i=>i>=0);
+  const who5raw = who5idx.reduce((s,i)=>s+answers[i].z,0); // 5–25
+  const who5pct = Math.round((who5raw-5)/20*100);          // 0–100
+  const who5El  = document.getElementById('who5Val');
+  who5El.textContent = who5pct+'%';
+  let wColor, wLabel, wInterp, wBarColor;
+  if(who5pct>=69){
+    wColor='green'; wLabel='Gutes Wohlbefinden';
+    wInterp='Ihr allgemeines Wohlbefinden ist gut. WHO-Richtwert: ≥ 69 %.';
+    wBarColor='#2E7D32';
+  } else if(who5pct>=50){
+    wColor='amber'; wLabel='Mässiges Wohlbefinden';
+    wInterp='Ihr Wohlbefinden liegt im mittleren Bereich — ein Gespräch lohnt sich.';
+    wBarColor='#E65100';
+  } else {
+    wColor='red'; wLabel='Eingeschränktes Wohlbefinden';
+    wInterp='Unter 50 % empfiehlt die WHO ein vertiefendes Gespräch. WHO-Richtwert: ≥ 69 %.';
+    wBarColor='#C62828';
+  }
+  who5El.className='score-val '+wColor;
+  document.getElementById('who5Label').textContent  = wLabel;
+  document.getElementById('who5Interp').textContent = wInterp;
+  const who5Bar = document.getElementById('who5Bar');
+  who5Bar.style.width      = who5pct+'%';
+  who5Bar.style.background = wBarColor;
+
+  // ── Module scores ──
+  const avg = arr => arr.length ? parseFloat((arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1)) : 0;
+  const scored = MODUL_ORDER.map(m=>{
+    const idxs = FRAGEN.map((f,i)=>f.modul===m?i:-1).filter(i=>i>=0);
+    const zArr = idxs.map(i=>answers[i].z);
+    const wArr = idxs.map(i=>answers[i].w);
+    const zAvg = avg(zArr);
+    const wAvg = avg(wArr);
+    // Handlungsbedarf: hohe Wichtigkeit × tiefer Zustand
+    const bedarf = parseFloat(((6-zAvg)*wAvg/5).toFixed(1));
+    return { modul:m, zAvg, wAvg, bedarf };
+  }).sort((a,b)=>b.bedarf-a.bedarf);
+
+  function zone(z,w){
+    if(z>=4&&w>=4) return {label:'Stärke schützen', cls:'z-schuetzen'};
+    if(z< 3&&w>=4) return {label:'Handeln',          cls:'z-handeln'};
+    if(z>=3&&w>=3) return {label:'Weiterentwickeln', cls:'z-entwickeln'};
+    return              {label:'Beobachten',         cls:'z-beobachten'};
+  }
+
+  // Table
+  document.getElementById('resultsBody').innerHTML = scored.map(s=>{
+    const z   = zone(s.zAvg, s.wAvg);
+    const pct = Math.round(s.bedarf/5*100);
+    const bc  = s.bedarf>=3?'#C62828':s.bedarf>=2?'#E65100':'#2E7D32';
+    return `<tr>
+      <td><strong>${s.modul}</strong></td>
+      <td>${s.zAvg}</td>
+      <td>${s.wAvg}</td>
+      <td>
+        <div class="mini-bar-wrap">
+          <div class="mini-bar" style="width:${pct}%;background:${bc}"></div>
+        </div>
+      </td>
+      <td><span class="zone-badge ${z.cls}">${z.label}</span></td>
+    </tr>`;
+  }).join('');
+
+  // Bubble chart
+  buildChart(scored);
+
+  // Fokus
+  const fokusLabels = fokusSelected.map(id=>FOKUS_OPTIONEN.find(o=>o.id===id)?.label||id);
+  document.getElementById('fokusResultTags').innerHTML =
+    fokusLabels.map(l=>`<span class="fokus-tag">${l}</span>`).join('');
+
+  sendEmail(who5pct, scored, fokusLabels);
+}
+
+// ══════════════════════════════════════════
+// CHART
+// ══════════════════════════════════════════
+function buildChart(scored) {
   const ctx = document.getElementById('bubbleChart').getContext('2d');
-  ci = new Chart(ctx, {
-    type: 'bubble',
-    data: { datasets: [{ data: cd, backgroundColor: cd.map(d => d.bg), borderColor: cd.map(d => d.border), borderWidth: 1.5 }] },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      layout: { padding: { top: 28, right: 20, bottom: 8, left: 8 } },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            title: () => '',
-            label: c => {
-              const d = c.raw;
-              const lines = d.labels.map(l => '  ' + l);
-              lines.push('');
-              lines.push('  Aktuell: ' + d.x + '   Künftig: ' + d.y);
-              return lines;
-            }
-          },
-          backgroundColor: 'rgba(26,39,68,0.93)', bodyColor: 'white', padding: 12, cornerRadius: 8, displayColors: false
-        }
+  const datasets = scored.map((s,i)=>({
+    label: s.modul,
+    data:[{x:s.zAvg, y:s.wAvg, r:Math.max(9,s.bedarf*5.5)}],
+    backgroundColor: MODUL_COLORS[i]+'88',
+    borderColor:     MODUL_COLORS[i],
+    borderWidth:2
+  }));
+  new Chart(ctx,{
+    type:'bubble',
+    data:{datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        x:{min:0,max:6,title:{display:true,text:'Zustand heute →'},ticks:{stepSize:1}},
+        y:{min:0,max:6,title:{display:true,text:'Wichtigkeit →'},ticks:{stepSize:1}}
       },
-      scales: {
-        x: { min: 0, max: 5.8, title: { display: true, text: 'Aktuell', color: '#6b7a99', font: { size: 12 } }, ticks: { stepSize: 1, color: '#6b7a99' }, grid: { color: 'rgba(212,221,240,0.5)' } },
-        y: { min: 0, max: 5.8, title: { display: true, text: 'Künftig (in 90 Tagen)', color: '#6b7a99', font: { size: 12 } }, ticks: { stepSize: 1, color: '#6b7a99' }, grid: { color: 'rgba(212,221,240,0.5)' } }
+      plugins:{
+        legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},
+        tooltip:{callbacks:{
+          label:ctx=>`${ctx.dataset.label}: Z=${ctx.raw.x} / W=${ctx.raw.y}`
+        }}
       }
     }
   });
-
-  Chart.register({ id: 'flh', afterDraw(c) {
-    const ctx2 = c.ctx, xs = c.scales.x, ys = c.scales.y, ca = c.chartArea;
-    ctx2.save();
-    // Diagonal line (Aktuell = Künftig)
-    ctx2.setLineDash([5, 4]); ctx2.strokeStyle = 'rgba(26,39,68,0.2)'; ctx2.lineWidth = 1.5;
-    ctx2.beginPath();
-    ctx2.moveTo(xs.getPixelForValue(0), ys.getPixelForValue(0));
-    ctx2.lineTo(xs.getPixelForValue(5.8), ys.getPixelForValue(5.8));
-    ctx2.stroke();
-    ctx2.setLineDash([]);
-    // Labels
-    ctx2.font = '500 10px sans-serif'; ctx2.fillStyle = 'rgba(26,39,68,0.28)';
-    ctx2.fillText('Entwicklungswunsch ↑', ca.left + 8, ca.top + 14);
-    ctx2.fillText('Zufrieden →', xs.getPixelForValue(4.5), ys.getPixelForValue(0.3));
-    // Bubble labels
-    const meta = c.getDatasetMeta(0);
-    meta.data.forEach((el, idx) => {
-      const d = cd[idx];
-      ctx2.font = '600 10px sans-serif';
-      ctx2.fillStyle = d.isResource ? 'rgba(80,56,0,0.85)' : 'rgba(255,255,255,0.92)';
-      ctx2.textAlign = 'center'; ctx2.fillText(String(d.count), el.x, el.y + 3.5);
-    });
-    ctx2.restore();
-  }});
-  ci.update();
-
-  const ovl = cd.filter(d => d.count > 1);
-  document.getElementById('overlapNote').innerHTML = ovl.length
-    ? '<strong style="color:var(--navy)">Mehrere Aussagen an gleicher Position:</strong> ' + ovl.map(d => 'A=' + d.x + '/K=' + d.y + ': ' + d.labels.join(', ')).join(' · ')
-    : '';
 }
 
+// ══════════════════════════════════════════
+// EMAIL
+// ══════════════════════════════════════════
+function buildCoachURL() {
+  const payload = {
+    name:  userName,
+    moduls: Object.fromEntries(MODUL_ORDER.map(m=>{
+      const idxs = FRAGEN.map((f,i)=>f.modul===m?i:-1).filter(i=>i>=0);
+      return [m, idxs.map(i=>({z:answers[i].z,w:answers[i].w}))];
+    })),
+    fokus: fokusSelected
+  };
+  return location.href.split('?')[0]+'?d='+
+    LZString.compressToEncodedURIComponent(JSON.stringify(payload));
+}
+
+function sendEmail(who5pct, scored, fokusLabels) {
+  emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+    coachee_name:    userName,
+    date:            new Date().toLocaleDateString('de-CH'),
+    who5_score:      who5pct+'%',
+    moduls_summary:  scored.map(s=>`${s.modul}: Z=${s.zAvg} W=${s.wAvg}`).join(' | '),
+    fokus:           fokusLabels.join(', '),
+    coach_url:       buildCoachURL()
+  }).then(()=>{
+    document.getElementById('sendStatus').innerHTML =
+      '<div class="send-status send-ok">✓ Auswertung wurde per E-Mail an den Coach gesendet.</div>';
+  }).catch(err=>{
+    document.getElementById('sendStatus').innerHTML =
+      '<div class="send-status send-err">E-Mail konnte nicht gesendet werden: '+err.text+'</div>';
+  });
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
 function toggleRaw() {
   const el = document.getElementById('rawData');
-  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+  if(el.style.display==='block'){el.style.display='none';return;}
+  el.textContent = JSON.stringify({answers,fokus:fokusSelected},null,2);
+  el.style.display='block';
 }
 
 function restartCoach() {
-  answers = FRAGEN.map(() => ({ k: null, i: null }));
-  fokusSelected = [];
-  cur = 0;
-  history.replaceState(null, '', location.pathname);
+  answers=[...FRAGEN.map(()=>({z:null,w:null}))];
+  fokusSelected=[];
+  cur=0;
+  history.replaceState(null,'',location.pathname);
   showScreen('introScreen');
+  document.getElementById('progressFill').style.width='0%';
 }
+
+// Init
+document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
 </script>
 </body>
 </html>
