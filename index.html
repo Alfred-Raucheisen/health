@@ -402,7 +402,15 @@ for(let i=0;i<FRAGEN.length;i+=3) PAGES.push([i,i+1,i+2].filter(j=>j<FRAGEN.leng
 // FLOW
 // ══════════════════════════════════════════
 function startAssessment() {
-  userName = document.getElementById('userName').value.trim() || 'Unbekannt';
+  const nameVal = document.getElementById('userName').value.trim();
+  if (!nameVal) {
+    const el = document.getElementById('userName');
+    el.style.borderColor = '#C0392B';
+    el.placeholder = 'Bitte Name eintragen';
+    el.focus();
+    return;
+  }
+  userName = nameVal;
   showScreen('questionScreen');
   cur = 0;
   renderPage();
